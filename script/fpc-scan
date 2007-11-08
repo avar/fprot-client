@@ -1,0 +1,146 @@
+#!/usr/bin/env perl
+use v5.8;
+use strict;
+
+use Pod::Usage ();
+use Getopt::Long ();
+
+use Cwd qw(abs_path);
+use File::Find;
+use File::Spec::Functions qw(catfile);
+
+use FProt::Client;
+use Data::Dump 'dump';
+
+my $name = 'fpc-scan';
+my $VERSION = '1.00';
+
+=head1 NAME
+
+fpc-scan - virus scan files and directories with B<fpscand> via L<FProt::Client>
+
+=head1 SYNOPSIS
+
+    fpc-scan FILEs
+
+=head1 DESCRIPTION
+
+=head1 OPTIONS
+
+=over
+
+=item -h, --help
+
+Print a usage message listing all availible options
+
+=item -v, --version
+
+Print the version number, then exit successfully.
+
+=item -H, --host
+
+=item -p, --port
+
+=back
+
+=head1 AUTHOR
+
+E<AElig>var ArnfjE<ouml>rE<eth> Bjarmason <avar@f-prot.com>
+
+=cut
+
+#
+# Get command line options
+#
+
+Getopt::Long::Parser->new(
+	config => [ qw< bundling no_ignore_case no_require_order pass_through > ],
+)->getoptions(
+	'h|help' => \my $help,
+	'v|version' => \my $version,
+    'H|host=s' => \my $host,
+    'p|port=s' => \my $port,
+) or help();
+
+# Since we're using pass_through @ARGV may contain unknown options at
+# this point, cut these out and pass them to fpscand
+my @argv = @ARGV;
+my (@options, @files);
+
+my @files = @ARGV;
+
+#
+# Deal with --help, --version and incorrect usage
+#
+
+# Display version if requested
+version( exitval => 0 )
+    if $version;
+
+help( verbose => 1, exitval => 0 )
+    if $help;
+help( verbose => 0, exitval => 1 )
+    unless @ARGV;
+
+#
+# Main logic
+#
+
+my $fpc = FProt::Client->new(
+    # Pass the host and port arguments if they were defined, otherwise
+    # use the FProt::Client defaults
+    $host ? (host => $host) : (),
+    $port ? (port => $port) : (),
+);
+
+# Scan all files, recurse to any directories that are provided
+for my $file (@files) {
+    find(
+        {
+            wanted => \&wanted,
+
+            # Don't follow symbolic links
+            follow => 0,
+
+            # Don't chdir while recursing
+            no_chdir => 0,
+        },
+        $file
+    );
+}
+
+exit 0;
+
+sub wanted
+{
+    my ($file, $dir) = ($File::Find::name, $File::Find::dir);
+
+    my $path = abs_path($file);
+
+    return unless -f $path;
+
+    my ($code, $status, $scan_path, $archive_item) = $fpc->scan_file($path);
+
+    if ($archive_item) {
+        printf "%s->%s: %s (%d)\n", $scan_path, $archive_item, $status, $code;
+    } else {
+        printf "%s: %s (%d)\n", $scan_path, $status, $code;
+    }
+}
+
+sub help
+{
+    my %arg = @_;
+
+    Pod::Usage::pod2usage(
+        -verbose => $arg{ verbose },
+        -exitval => $arg{ exitval } || 0,
+    );
+}
+
+sub version
+{
+    my %arg = @_;
+    printf "%s %s\n", $name, $VERSION;
+    exit $arg{ exitval } || 0;
+}

@@ -1,0 +1,5 @@
+There's some bug with the scanning utility locking up in certain
+cases.  I'm doing something wrong with reading/writing to the socket
+that's causing this
+
+Queued scanning

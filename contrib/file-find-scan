@@ -1,0 +1,75 @@
+#!/usr/bin/env perl
+
+=pod
+
+Sanity checking utility in addition to the F<t/> dir that scans all
+the files from a given path.
+
+Needs to be edited somewhat to get it to work, but a good framework
+for benchmarking.
+
+=cut
+
+use blib;
+use strict;
+
+use File::stat;
+use File::Find;
+use FProt::Client;
+
+use Data::Dump 'dump';
+
+my $dir = shift;
+
+warn "Scanning from $dir";
+
+my $fpc = FProt::Client->new;
+
+use Benchmark;
+
+find({
+    follow => 0,
+    follow_fast => 0,
+    wanted => sub {
+        my $file = $File::Find::name;
+        return unless -f $file;
+
+        open my $fh, "<", $file or return;
+        binmode $fh;
+
+        printf "$file(%d)..", stat($file)->size;
+        my @ret = $fpc->scan_stream($file, $fh, stat($file)->size);
+        printf "%d\t%s\t%s\n", @ret[0..2];
+    }
+}, $dir);
+exit 0;
+
+timethese(1, {
+    scan_file => sub {
+        find({
+            follow => 0,
+            follow_fast => 0,
+            wanted => sub {
+                my $file = $File::Find::name;
+                return unless -f $file;
+                my @ret = $fpc->scan_file($file);
+                #printf "%d\t%s\n", @ret[0,2];
+            }
+        }, $dir);
+    },
+    scan_stream => sub {
+        find({
+            follow => 0,
+            follow_fast => 0,
+            wanted => sub {
+                my $file = $File::Find::name;
+                return unless -f $file;
+
+                open my $fh, "<", $file;
+
+                my @ret = $fpc->scan_stream($file, $fh, stat($file)->size);
+                #printf "%d\t%s\n", @ret[0,2];
+            }
+        }, $dir);
+    },
+});

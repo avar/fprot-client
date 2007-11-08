@@ -1,0 +1,45 @@
+2007-11-08  Ævar Arnfjörð Bjarmason  <avar@f-prot.com> (0.07)
+
+	* script/fpc-client: Updated to scan directories too
+
+2007-08-15 Ævar Arnfjörð Bjarmason <avar@f-prot.com> (0.06)
+
+	* *: Changed the license from GPLv2-only to "same as perl" (GPLv2 + Artistic)
+	* Makefile.PL: Don't install script/fpc-scan
+	* script/fpc-scan: Make --version work
+	* script/fpc-scan: Cleanup minor errors
+	* Client.pm: Use C<our> instead of C<use constant>
+	* Client.pm: Don't load Carp.pm unless we need to
+	* Client.pm: Warn when the protocol fpscand is speaking is newer than
+	             the one we understand
+	* Client.pm: =head1 DESCRIPTION section added to POD
+	* t/info.t: Changed to match Client.pm SIGNATURE change and
+	            cleaned up the regex
+	* t/scan_(file|stream).t: Test scanning options
+	* t: Some cleanups
+
+2007-04-24 Ævar Arnfjörð Bjarmason <avar@f-prot.com> (0.05)
+
+	* contrib/file-find-testset: New file to construct a testset based
+	                             on return codes
+
+2007-03-29 Ævar Arnfjörð Bjarmason <avar@f-prot.com> (0.04)
+
+	* Client.pm: Documented return codes
+	* TODO: Trimmed
+	
+2007-03-29 Ævar Arnfjörð Bjarmason <avar@f-prot.com> (0.03)
+
+	* queue.t: rmed
+	* Client.pm: Resolved bug introduced by changes in fpscand output
+	* Client.pm: Uncommented =head2 info and fixed its formatting
+	* Client.pm: Lots of POD fixes and code cleanup
+	* Client.pm: Removed license section
+	
+2007-03-29 Ævar Arnfjörð Bjarmason <avar@f-prot.com> (0.02)
+
+	* Client.pm: POD spelling error: post => port
+
+2007-02-22 Ævar Arnfjörð Bjarmason <avar@f-prot.com> (0.01)
+
+	* Initial release

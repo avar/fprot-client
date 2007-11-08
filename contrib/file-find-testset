@@ -1,0 +1,56 @@
+#!/usr/bin/env perl
+
+=pod
+
+A utility to retrieve useful files from an AV testset. Scans all the
+files under a given directory and keeps track of the return codes for
+each file. If the return code hasn't been seen before the file is
+copied into F</tmp/testset/> under the name F<$code-$name>.
+
+=cut
+
+use strict;
+
+use File::Find;
+use FProt::Client;
+use File::Copy;
+
+my $dir = shift;
+
+warn "Scanning from $dir";
+
+my $fpc = FProt::Client->new;
+
+# Hash that keeps track of return codes we've seen
+my %seen;
+
+mkdir '/tmp/testset' unless -d '/tmp/testset';
+
+find({
+    follow => 0,
+    follow_fast => 0,
+    wanted => sub {
+        my $file = $File::Find::name;
+
+        return unless -f $file;
+
+        print "Scanning $file...";
+
+        my ($code, $msg, $file_name, $archive_item)  = $fpc->scan_file($file);
+
+        if (exists $seen{$code}) {
+            # We've seen this type of file before, next
+            print "not interesting\n";
+            return;
+        } else {
+            # Ooh! A new type of file, tuck it away!
+            print "interesting, saving ...";
+
+            my ($tmp) = $file =~ m< .* / (.*?) $ >x;
+            copy($file => "/tmp/testset/$code-$tmp");
+            $seen{$code} = undef;
+
+            print "done\n";
+        }
+    }
+}, $dir);
