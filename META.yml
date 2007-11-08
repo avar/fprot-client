@@ -17,4 +17,4 @@ no_index:
 requires: 
   IO::Socket::INET: 0
 tests: t/*.t
-version: 0.06
+version: 0.07
