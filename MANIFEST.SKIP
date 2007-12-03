@@ -1,0 +1,12 @@
+\.updated$
+CVS
+^\.git/
+^blib
+^Makefile$
+^pm_to_blib$
+\.bak$
+\.old$
+\.tar$
+\.tar\.gz$
+~$
+^[-\w]+?-\d\.\d{2}/
