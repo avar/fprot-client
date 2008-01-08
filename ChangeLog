@@ -1,3 +1,7 @@
+2008-01-08  Ævar Arnfjörð Bjarmason  <avar@f-prot.com> (0.08)
+
+	* Makefile.PL: Switched from Module::Install to ExtUtils::MakeMaker
+
 2007-11-08  Ævar Arnfjörð Bjarmason  <avar@f-prot.com> (0.07)
 
 	* script/fpc-client: Updated to scan directories too
@@ -27,7 +31,7 @@
 
 	* Client.pm: Documented return codes
 	* TODO: Trimmed
-	
+
 2007-03-29 Ævar Arnfjörð Bjarmason <avar@f-prot.com> (0.03)
 
 	* queue.t: rmed
@@ -35,7 +39,7 @@
 	* Client.pm: Uncommented =head2 info and fixed its formatting
 	* Client.pm: Lots of POD fixes and code cleanup
 	* Client.pm: Removed license section
-	
+
 2007-03-29 Ævar Arnfjörð Bjarmason <avar@f-prot.com> (0.02)
 
 	* Client.pm: POD spelling error: post => port

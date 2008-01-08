@@ -2,7 +2,7 @@ package FProt::Client;
 use strict;
 use IO::Socket::INET ();
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 # The fpscand protocol this library expects
 our $FPSCAND_PROTOCOL     = '1.0';
@@ -529,7 +529,7 @@ E<AElig>var ArnfjE<ouml>rE<eth> Bjarmason <avar@f-prot.com>
 
 =head1 LICENSE
 
-Copyright 2007 E<AElig>var ArnfjE<ouml>rE<eth> Bjarmason.
+Copyright 2007-2008 E<AElig>var ArnfjE<ouml>rE<eth> Bjarmason.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
