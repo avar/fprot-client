@@ -4,21 +4,9 @@ Client.pm
 contrib/file-find-scan
 contrib/file-find-testset
 contrib/test.sh
-inc/Module/AutoInstall.pm
-inc/Module/Install.pm
-inc/Module/Install/AutoInstall.pm
-inc/Module/Install/Base.pm
-inc/Module/Install/Can.pm
-inc/Module/Install/Fetch.pm
-inc/Module/Install/Include.pm
-inc/Module/Install/Makefile.pm
-inc/Module/Install/Metadata.pm
-inc/Module/Install/Win32.pm
-inc/Module/Install/WriteAll.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
-META.yml
 script/fpc-scan
 t/00-compile.t
 t/01-connect.t
@@ -34,3 +22,4 @@ t/scan_file.t
 t/scan_queue.t
 t/scan_stream.t
 TODO
+META.yml                                 Module meta-data (added by MakeMaker)

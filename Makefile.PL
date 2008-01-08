@@ -1,28 +1,23 @@
-use inc::Module::Install;
+use strict;
+use ExtUtils::MakeMaker;
 
-name 'FProt-Client';
-author 'Ævar Arnfjörð Bjarmason <avar@f-prot.com>';
+WriteMakefile(
+    NAME          => 'FProt::Client',
+    AUTHOR        => 'Ævar Arnfjörð Bjarmason <avar@cpan.org>',
+    ABSTRACT_FROM => 'Client.pm',
+    VERSION_FROM  => 'Client.pm',
+    LICENSE       => 'perl',
+    PREREQ_PM     => {
+        # Client.pm
+        'IO::Socket::INET'         => 0,
 
-abstract_from 'Client.pm';
-version_from  'Client.pm';
-license_from  'Client.pm';
+        # t/
+        'Test::More' => 0,
 
-requires 'IO::Socket::INET';
-
-# t/
-build_requires 'Test::More';
-
-# t/scan_file.t
-build_requires 'File::Temp';
-build_requires 'File::stat';
-build_requires 'Cwd';
-build_requires 'File::Spec::Functions';
-
-# Don't install this for now
-#install_script  glob 'script/*';
-
-auto_install;
-
-tests 't/*.t';
-
-WriteAll;
+        # t/scan_file.t
+        'File::Temp'            => 0,
+        'File::stat'            => 0,
+        'Cwd'                   => 0,
+        'File::Spec::Functions' => 0,
+    },
+);
