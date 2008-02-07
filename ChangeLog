@@ -1,3 +1,14 @@
+2008-02-07  Ævar Arnfjörð Bjarmason  <avar@f-prot.com> (0.09)
+
+	* t/scan_(file|stream).t: The F-Prot engine previously did not
+	flag eicar as a virus if the file had a .txt extension. It now
+	flags eicar content as infected regardless of what the extension
+	is. This made tests fail on the 4.4.2.54 engine but not on
+	4.3.*. Since I don't know when this was introduced exactly and we
+	don't need the test anyway I've commented out the scanning of
+	eicar.txt so tests will pass on old and new versions of the
+	engine.
+
 2008-01-08  Ævar Arnfjörð Bjarmason  <avar@f-prot.com> (0.08)
 
 	* Makefile.PL: Switched from Module::Install to ExtUtils::MakeMaker

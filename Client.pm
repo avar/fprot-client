@@ -2,7 +2,7 @@ package FProt::Client;
 use strict;
 use IO::Socket::INET ();
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 # The fpscand protocol this library expects
 our $FPSCAND_PROTOCOL     = '1.0';
